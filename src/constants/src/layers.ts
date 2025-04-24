@@ -553,7 +553,8 @@ export const LAYER_TYPES = keyMirror({
   '3D': null,
   trip: null,
   s2: null,
-  vectorTile: null
+  vectorTile: null,
+  wms: null
 });
 
 export const EDITOR_AVAILABLE_LAYERS: string[] = [
@@ -562,5 +563,6 @@ export const EDITOR_AVAILABLE_LAYERS: string[] = [
   LAYER_TYPES.arc,
   LAYER_TYPES.line,
   LAYER_TYPES.hexagonId,
-  LAYER_TYPES.geojson
+  LAYER_TYPES.geojson,
+  LAYER_TYPES.wms
 ];

@@ -3,12 +3,14 @@
 
 export enum DatasetType {
   LOCAL = 'local',
-  VECTOR_TILE = 'vector-tile'
+  VECTOR_TILE = 'vector-tile',
+  WMS_TILE = 'wms-tile'
 }
 
 export enum RemoteTileFormat {
   MVT = 'mvt',
-  PMTILES = 'pmtiles'
+  PMTILES = 'pmtiles',
+  WMS = 'wms'
 }
 
 export const REMOTE_TILE = 'remote';

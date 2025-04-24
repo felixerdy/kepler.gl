@@ -112,7 +112,8 @@ export default {
       trip: 'trip',
       s2: 'S2',
       '3d': '3D',
-      vectortile: 'vector tile'
+      vectortile: 'vector tile',
+      wms: 'WMS',
     },
     layerUpdateError:
       'An error occurred during layer update: {errorMessage}. Make sure the format of the input data is valid.',

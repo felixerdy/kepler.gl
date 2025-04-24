@@ -12,10 +12,12 @@ import {getError} from '@kepler.gl/utils';
 
 import {MetaResponse} from './common';
 import LoadDataFooter from './load-data-footer';
-// import TilesetIcon from './tileset-icon';
+import TilesetIcon from './tileset-icon';
 import TilesetVectorForm from './tileset-vector-form';
+import WMSLayerIcon from 'src/layers/src/wms-layer/wms-layer-icon';
+import TilesetWMSForm from './tileset-wms-form';
 
-// const WIDTH_ICON = '62px';
+const WIDTH_ICON = '62px';
 
 const LoadTilesetTabContainer = styled.div`
   color: ${props => props.theme.AZURE};
@@ -27,12 +29,10 @@ const Container = styled.div`
   background-color: ${props => props.theme.WHITE};
 `;
 
-/*
 const TilesetTypeContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(4, ${WIDTH_ICON});
 `;
-*/
 
 const MetaContainer = styled.div`
   display: flex;
@@ -84,7 +84,13 @@ const TILE_TYPES = [
     label: 'Vector Tile',
     Icon: VectorTileIcon,
     Component: TilesetVectorForm
-  }
+  },
+  {
+    id: 'wms',
+    label: 'WMS',
+    Icon: WMSLayerIcon,
+    Component: TilesetWMSForm
+  },
 ];
 
 function isReady(response) {
@@ -97,7 +103,7 @@ function LoadTilesetTabFactory() {
     isAddingDatasets,
     intl
   }) => {
-    const [typeIndex /* , setTypeIndex*/] = useState<number>(0);
+    const [typeIndex , setTypeIndex] = useState<number>(0);
     const [response, setResponse] = useState<MetaResponse>({});
 
     const error = response.error;
@@ -123,11 +129,9 @@ function LoadTilesetTabFactory() {
         <Container>
           <div>
             <StyledHeaderMessage>{tilesetHeaderMessage}</StyledHeaderMessage>
-            {/** 
             <div>
               <label htmlFor="tileset-type">Tileset Type</label>
             </div>
-             * Enable once we support different vector layers
             <TilesetTypeContainer className="tileset-type">
               {TILE_TYPES.map((tileType, index) => (
                 <TilesetIcon
@@ -139,12 +143,12 @@ function LoadTilesetTabFactory() {
                 />
               ))}
             </TilesetTypeContainer>
-            */}
+            
             <div>
               <CurrentForm setResponse={setResponse} />
-              {/** 
+              
               {error && <div>{getError(error)}</div>}
-              */}
+              
             </div>
           </div>
           <MetaContainer>
@@ -152,7 +156,7 @@ function LoadTilesetTabFactory() {
               <AutoSizer>
                 {({height, width}) => (
                   <MetaInnerContainer height={height} width={width}>
-                    <JSONPretty id="json-pretty" json={jsonDataText} />
+                    <JSONPretty id="json-pretty" json={jsonDataText}   />
                   </MetaInnerContainer>
                 )}
               </AutoSizer>
