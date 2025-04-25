@@ -3,7 +3,8 @@
 
 import React, {useCallback, useEffect, useState} from 'react';
 import styled from 'styled-components';
-import {XMLParser} from 'fast-xml-parser';
+import WMSCapabilities from 'wms-capabilities';
+
 
 import {DatasetType, REMOTE_TILE, RemoteTileFormat} from '@kepler.gl/constants';
 import {DatasetCreationAttributes} from './common';
@@ -62,18 +63,15 @@ const TilesetWMSForm: React.FC<TilesetVectorFormProps> = ({setResponse}) => {
           throw new Error(`Failed to fetch GetCapabilities: ${response.statusText}`);
         }
         const text = await response.text();
-        const parser = new XMLParser({
-          ignoreAttributes: true
-        });
-        const json = parser.parse(text);
+        const json = new WMSCapabilities(text, DOMParser).toJSON();
 
         // Extract name or title from GetCapabilities response
-        const serviceTitle = json?.WMS_Capabilities?.Service?.Title;
+        const serviceTitle = json?.Service?.Title;
         if (serviceTitle && !layerName) {
           setLayerName(serviceTitle);
         }
 
-        const layers = json?.WMS_Capabilities?.Capability?.Layer?.Layer;
+        const layers = json?.Capability?.Layer?.Layer;
         if (Array.isArray(layers)) {
           const layerOptions = layers.map((layer: any) => ({
             name: layer.Name,
@@ -104,7 +102,8 @@ const TilesetWMSForm: React.FC<TilesetVectorFormProps> = ({setResponse}) => {
           type: REMOTE_TILE,
           remoteTileFormat: RemoteTileFormat.WMS,
           tilesetDataUrl: wmsUrl,
-          tilesetMetadataUrl: `${wmsUrl}?service=WMS&request=GetCapabilities`
+          tilesetMetadataUrl: `${wmsUrl}?service=WMS&request=GetCapabilities`,
+          layers: availableLayers
         }
       };
       setResponse({
@@ -144,28 +143,6 @@ const TilesetWMSForm: React.FC<TilesetVectorFormProps> = ({setResponse}) => {
         />
         <TilesetInputDescription>Provide a valid WMS service URL.</TilesetInputDescription>
       </div>
-      {availableLayers.length > 0 && (
-        <div>
-          <label htmlFor="layer-select">Select Layer</label>
-          <br />
-          <select
-            id="layer-select"
-            value={layerName}
-            onChange={e => setLayerName(e.target.value)}
-          >
-            {availableLayers.map(layer => (
-              <option key={layer.name} value={layer.name}>
-                {layer.title || layer.name}
-              </option>
-            ))}
-          </select>
-
-           
-          <TilesetInputDescription>
-            Select a layer from the available options.
-          </TilesetInputDescription>
-        </div>
-      )}
     </TilesetInputContainer>
   );
 };

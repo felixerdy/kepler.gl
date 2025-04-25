@@ -96,6 +96,7 @@ export default {
     aggregateBy: 'Aggregate {field} by',
     '3DModel': '3D Model',
     '3DModelOptions': '3D Model Options',
+    wms: "WMS",
     type: {
       point: 'point',
       arc: 'arc',

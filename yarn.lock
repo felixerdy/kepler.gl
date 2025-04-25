@@ -16592,17 +16592,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fast-xml-parser@npm:^5.2.1":
-  version: 5.2.1
-  resolution: "fast-xml-parser@npm:5.2.1"
-  dependencies:
-    strnum: "npm:^2.0.5"
-  bin:
-    fxparser: src/cli/cli.js
-  checksum: 10c0/56839040975f66a1b825dd705bbf7fd622b605f59b994c80a5eda2fb971d553dca7341f094b5c04ae5277164f24e93603cc1f0fb90e22a57411bf350bede48b9
-  languageName: node
-  linkType: hard
-
 "fastest-levenshtein@npm:^1.0.12":
   version: 1.0.16
   resolution: "fastest-levenshtein@npm:1.0.16"
@@ -20803,7 +20792,6 @@ __metadata:
     eslint-plugin-prettier: "npm:4.2.1"
     eslint-plugin-react: "npm:^7.35.0"
     eslint-plugin-react-hooks: "npm:^4.6.2"
-    fast-xml-parser: "npm:^5.2.1"
     gl: "npm:^6.0.2"
     global: "npm:^4.4.0"
     html-webpack-plugin: "npm:^4.3.0"
@@ -20850,6 +20838,7 @@ __metadata:
     webpack-dev-server: "npm:^3.1.14"
     webpack-hot-middleware: "npm:^2.24.3"
     webpack-stats-plugin: "npm:^0.2.1"
+    wms-capabilities: "npm:^0.6.0"
   peerDependencies:
     react: ">=18.2"
     react-dom: ">=18.2"
@@ -28431,13 +28420,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"strnum@npm:^2.0.5":
-  version: 2.0.5
-  resolution: "strnum@npm:2.0.5"
-  checksum: 10c0/856026ef65eaf15359d340a313ece25822b6472377b3029201b00f2657a1a3fa1cd7a7ce349dad35afdd00faf451344153dbb3d8478f082b7af8c17a64799ea6
-  languageName: node
-  linkType: hard
-
 "style-loader@npm:2.0.0":
   version: 2.0.0
   resolution: "style-loader@npm:2.0.0"
@@ -31257,6 +31239,15 @@ __metadata:
   version: 1.4.0
   resolution: "wkt-parser@npm:1.4.0"
   checksum: 10c0/4046fd355ddc626e6ea71f5a05e670bd3d6dc65dc0f8b10f2e9381ea6bd61cb90379389b0fb52337de9330788405dd0590b57e01b2c85f6f471acc794713243b
+  languageName: node
+  linkType: hard
+
+"wms-capabilities@npm:^0.6.0":
+  version: 0.6.0
+  resolution: "wms-capabilities@npm:0.6.0"
+  bin:
+    wmscapabilities: bin/wmscapabilities
+  checksum: 10c0/ea01a948c730a3e0e185e96b0d451a87a59671c7677426702b7cd591e74d5624ee79777b4b57e0bab550fa5bfd1b4ad89a8c7460296a1d8a46e58a3494702d9a
   languageName: node
   linkType: hard
 
