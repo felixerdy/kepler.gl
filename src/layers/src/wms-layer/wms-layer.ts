@@ -4,7 +4,7 @@ import {BitmapLayer} from '@deck.gl/layers';
 import AbstractTileLayer, {
   AbstractTileLayerConfig,
   AbstractTileLayerVisConfigSettings,
-  LayerData as CommonLayerData,
+  LayerData as CommonLayerData
 } from '../vector-tile/abstract-tile-layer';
 import {Field, Merge, VisConfigNumber, VisConfigSelection} from 'src/types';
 import TileDataset from '../vector-tile/common-tile/tile-dataset';
@@ -37,7 +37,10 @@ export const wmsTileVisConfigs = {
 
 export type WMSLayerVisConfig = {
   opacity: number;
-  wmsLayer: string;
+  wmsLayer: {
+    name: string;
+    title: string;
+  };
 };
 
 export type WMSLayerConfig = Merge<
@@ -66,15 +69,24 @@ export default class WMSLayer extends AbstractTileLayer<WMSFeature> {
   declare visConfigSettings: WMSLayerVisConfigSettings;
 
   // Constructor
-  constructor(props: ConstructorParameters<typeof AbstractTileLayer>[0]) {
+  constructor(
+    props: ConstructorParameters<typeof AbstractTileLayer>[0] & {
+      layers?: {name: string; title: string}[];
+    }
+  ) {
     super(props);
+
+    const defaultWmsLayer = props.layers?.[0] || {
+      name: 'defaultLayer',
+      title: 'Default Layer'
+    };
+
     this.registerVisConfig(wmsTileVisConfigs);
 
-    console.log('WMS Layer Constructor:', props);
-
-    this.visConfigSettings = {
-      ...this.visConfigSettings,
-    }
+    this.updateLayerVisConfig({
+      opacity: 0.8, // Default opacity
+      wmsLayer: defaultWmsLayer
+    });
   }
 
   // Properties
@@ -98,7 +110,7 @@ export default class WMSLayer extends AbstractTileLayer<WMSFeature> {
     const {label} = dataset.metadata || {};
     const props = {
       label: label || 'WMS Layer',
-      layers: dataset.metadata?.layers || [],
+      layers: dataset.metadata?.layers || []
     };
 
     return {props: [props]};
@@ -130,8 +142,6 @@ export default class WMSLayer extends AbstractTileLayer<WMSFeature> {
     const dataset = datasets[dataId];
     const metadata = dataset.metadata;
 
-   
-
     // Use metadata to configure your layer
     const tilesetDataUrl = metadata?.tilesetDataUrl || null;
 
@@ -146,18 +156,7 @@ export default class WMSLayer extends AbstractTileLayer<WMSFeature> {
     const {visConfig} = this.config;
     const {data} = opts;
 
-    this.updateLayerVisConfig(
-      {
-        opacity: this.config.visConfig.opacity,
-        wmsLayer: this.config.visConfig.wmsLayer
-      }
-    )
-
-    console.log(visConfig);
-
-    const wmsLayer = visConfig.wmsLayer ?? data.metadata.layers[0].name;
-
-    console.log('WMS Layer:', wmsLayer);
+    const wmsLayer = visConfig.wmsLayer.name ?? data.metadata.layers[0].name;
 
     return [
       new TileLayer({
@@ -170,8 +169,6 @@ export default class WMSLayer extends AbstractTileLayer<WMSFeature> {
           const [maxX, maxY] = lonLatToWebMercator(east, north);
 
           const base_url = data.tilesetDataUrl;
-
-          console.log("WMS Layer (TileLayer", wmsLayer);
 
           const params = new URLSearchParams({
             SERVICE: 'WMS',
@@ -206,8 +203,8 @@ export default class WMSLayer extends AbstractTileLayer<WMSFeature> {
           return new BitmapLayer({
             id: `${props.id}-bitmap`,
             image: url,
+            bounds: [west, south, east, north],
             opacity: visConfig.opacity,
-            bounds: [west, south, east, north]
           });
         }
       })

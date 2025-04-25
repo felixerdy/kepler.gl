@@ -1022,32 +1022,36 @@ export default function LayerConfiguratorFactory(
       layerChannelConfigProps,
       layerConfiguratorProps
     }) {
-
-      console.log("layer", layer);
-      console.log("visConfiguratorProps", visConfiguratorProps);
-      console.log("layerChannelConfigProps", layerChannelConfigProps);
-      console.log("layerConfiguratorProps", layerConfiguratorProps);
-
       return (
         <StyledLayerVisualConfigurator>
           <LayerConfigGroup label={'layer.wms'} collapsible>
             <VisConfigSlider {...layer.visConfigSettings.opacity} {...visConfiguratorProps} />
             {/* TODO: Default selected is always undefined */}
             <ItemSelector
-              selectedItems={{name: layer.config.visConfig.wmsLayer, title: layer.config.visConfig.wmsLayer}}
+              selectedItems={layer.config.visConfig.wmsLayer}
               options={layerChannelConfigProps.dataset.metadata.layers}
               displayOption="title"
               getOptionValue="name"
               multiSelect={false}
               searchable={false}
-              onChange={value =>
+              onChange={value => {
+                if (!value) {
+                  return;
+                }
+                const selectedLayer = layerChannelConfigProps.dataset.metadata.layers.find(
+                  l => l.name === value
+                );
+                if (!selectedLayer) {
+                  return;
+                }
+
                 layerConfiguratorProps.onChange({
                   visConfig: {
                     ...layer.config.visConfig,
-                    wmsLayer: value
+                    wmsLayer: selectedLayer
                   }
-                })
-              }
+                });
+              }}
             />
           </LayerConfigGroup>
         </StyledLayerVisualConfigurator>
