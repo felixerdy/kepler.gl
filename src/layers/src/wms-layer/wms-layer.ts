@@ -189,7 +189,7 @@ export default class WMSLayer extends AbstractTileLayer<WMSFeature> {
         },
 
         updateTriggers: {
-          getTileData: [visConfig.wmsLayer, visConfig.opacity],
+          getTileData: [visConfig.wmsLayer],
           renderSubLayers: [visConfig.opacity]
         },
 

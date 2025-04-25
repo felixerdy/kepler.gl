@@ -211,7 +211,8 @@ export default {
   },
   datasetInfo: {
     rowCount: '{rowCount} rows',
-    vectorTile: 'Vector tile'
+    vectorTile: 'Vector tile',
+    wmsTile: 'WMS tile',
   },
   tooltip: {
     hideLayer: 'Hide layer',
