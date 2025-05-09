@@ -2,8 +2,8 @@
 // Copyright contributors to the kepler.gl project
 
 // Imports
-import {TileLayer} from '@deck.gl/geo-layers';
-import {BitmapLayer} from '@deck.gl/layers';
+// @ts-expect-error 
+import {_WMSLayer as DeckWMSLayer} from '@deck.gl/geo-layers';
 import AbstractTileLayer, {
   AbstractTileLayerConfig,
   AbstractTileLayerVisConfigSettings,
@@ -16,16 +16,6 @@ import {FindDefaultLayerPropsReturnValue} from '../layer-utils';
 import {DatasetType, LAYER_TYPES} from '@kepler.gl/constants';
 import {KeplerTable as KeplerDataset} from '@kepler.gl/table';
 import {notNullorUndefined} from '@kepler.gl/common-utils';
-
-/**
- * Utility function to convert EPSG:4326 (lat/lon) to EPSG:3857 (Web Mercator)
- */
-function lonLatToWebMercator(lon: number, lat: number): [number, number] {
-  const R = 6378137; // Earth's radius in meters
-  const x = R * ((lon * Math.PI) / 180);
-  const y = R * Math.log(Math.tan(Math.PI / 4 + (lat * Math.PI) / 360));
-  return [x, y];
-}
 
 // Types
 type WMSFeature = {
@@ -162,54 +152,11 @@ export default class WMSLayer extends AbstractTileLayer<WMSFeature> {
     const wmsLayer = visConfig.wmsLayer.name ?? data.metadata.layers[0].name;
 
     return [
-      new TileLayer({
-        id: `${this.id}-wms-layer`,
-        getTileData: async tile => {
-          const {west, north, east, south} = tile.bbox;
-
-          // Transform coordinates from EPSG:4326 to EPSG:3857
-          const [minX, minY] = lonLatToWebMercator(west, south);
-          const [maxX, maxY] = lonLatToWebMercator(east, north);
-
-          const base_url = data.tilesetDataUrl;
-
-          const params = new URLSearchParams({
-            SERVICE: 'WMS',
-            VERSION: '1.3.0',
-            REQUEST: 'GetMap',
-            FORMAT: 'image/png',
-            TRANSPARENT: 'true',
-            LAYERS: wmsLayer,
-            STYLES: '',
-            CRS: 'EPSG:3857',
-            BBOX: `${minX},${minY},${maxX},${maxY}`,
-            WIDTH: '256',
-            HEIGHT: '256'
-          });
-
-          const url = `${base_url}?${params.toString()}`;
-          return [url]; // Return as an array
-        },
-
-        updateTriggers: {
-          getTileData: [visConfig.wmsLayer],
-          renderSubLayers: [visConfig.opacity]
-        },
-
-        renderSubLayers: props => {
-          const {
-            bbox: {west, south, east, north}
-          } = props.tile;
-
-          const url = props.data[0]; // Assuming the first URL is the one we want
-
-          return new BitmapLayer({
-            id: `${props.id}-bitmap`,
-            image: url,
-            bounds: [west, south, east, north],
-            opacity: visConfig.opacity,
-          });
-        }
+      new DeckWMSLayer({
+        data: data.tilesetDataUrl,
+        serviceType: 'wms',
+        layers: [wmsLayer],
+        opacity: visConfig.opacity,
       })
     ];
   }
