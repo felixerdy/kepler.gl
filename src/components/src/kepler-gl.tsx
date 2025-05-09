@@ -104,6 +104,10 @@ const GlobalStyle = styled.div`
     color: ${props => props.theme.labelColor};
   }
 
+  :focus {
+    outline: none;
+  }
+
   .maplibregl-ctrl .maplibregl-ctrl-logo {
     display: none;
   }
@@ -608,7 +612,7 @@ function KeplerGlFactory(
                       ref={this.root}
                     >
                       <NotificationPanel {...notificationPanelFields} />
-                      <DndContext>
+                      <DndContext visState={visState}>
                         {!uiState.readOnly && !readOnly && <SidePanel {...sideFields} />}
                         <MapsLayout className="maps" mapState={this.props.mapState}>
                           {mapContainers}

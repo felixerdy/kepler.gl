@@ -9,7 +9,7 @@ import {PickInfo} from '@deck.gl/core/lib/deck';
 import DeckGL from '@deck.gl/react';
 import {createSelector, Selector} from 'reselect';
 import {useDroppable} from '@dnd-kit/core';
-import debounce from 'lodash.debounce';
+import debounce from 'lodash/debounce';
 
 import {VisStateActions, MapStateActions, UIStateActions} from '@kepler.gl/actions';
 
@@ -31,7 +31,8 @@ import {
   LayerBaseConfig,
   VisualChannelDomain,
   EditorLayerUtils,
-  AggregatedBin
+  AggregatedBin,
+  isRasterTilesBeingLoaded
 } from '@kepler.gl/layers';
 import {
   DatasetAttribution,
@@ -70,10 +71,10 @@ import {
   THROTTLE_NOTIFICATION_TIME,
   DEFAULT_PICKING_RADIUS,
   NO_MAP_ID,
-  EMPTY_MAPBOX_STYLE,
-  DROPPABLE_MAP_CONTAINER_TYPE
+  EMPTY_MAPBOX_STYLE
 } from '@kepler.gl/constants';
 
+import {DROPPABLE_MAP_CONTAINER_TYPE} from './common/dnd-layer-items';
 // Contexts
 import {MapViewStateContext} from './map-view-state-context';
 
@@ -1157,7 +1158,7 @@ export default function MapContainerFactory(
           {this._renderMapPopover()}
           {primary !== isSplit ? (
             <LoadingIndicator
-              isVisible={Boolean(isLoadingIndicatorVisible)}
+              isVisible={isLoadingIndicatorVisible || isRasterTilesBeingLoaded()}
               activeSidePanel={Boolean(activeSidePanel)}
               sidePanelWidth={sidePanelWidth}
             >

@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: MIT
+// Copyright contributors to the kepler.gl project
+
 // Imports
 import {TileLayer} from '@deck.gl/geo-layers';
 import {BitmapLayer} from '@deck.gl/layers';
@@ -6,7 +9,7 @@ import AbstractTileLayer, {
   AbstractTileLayerVisConfigSettings,
   LayerData as CommonLayerData
 } from '../vector-tile/abstract-tile-layer';
-import {Field, Merge, VisConfigNumber, VisConfigSelection} from 'src/types';
+import {Field, Merge, VisConfigNumber, VisConfigSelection} from '@kepler.gl/types';
 import TileDataset from '../vector-tile/common-tile/tile-dataset';
 import WMSLayerIcon from './wms-layer-icon';
 import {FindDefaultLayerPropsReturnValue} from '../layer-utils';

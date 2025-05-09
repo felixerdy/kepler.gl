@@ -4,7 +4,7 @@
 import {DATA_TYPES as ANALYZER_DATA_TYPES} from 'type-analyzer';
 import {ascending} from 'd3-array';
 import Console from 'global/console';
-import uniq from 'lodash.uniq';
+import uniq from 'lodash/uniq';
 import {DATA_TYPES} from 'type-analyzer';
 
 import {MVTSource, TileJSON} from '@loaders.gl/mvt';
@@ -17,7 +17,13 @@ import {
   parseUri,
   getFieldsFromData
 } from '@kepler.gl/common-utils';
-import {DatasetType, ALL_FIELD_TYPES, FILTER_TYPES, RemoteTileFormat} from '@kepler.gl/constants';
+import {
+  DatasetType,
+  ALL_FIELD_TYPES,
+  FILTER_TYPES,
+  PMTilesType,
+  RemoteTileFormat
+} from '@kepler.gl/constants';
 
 import {Feature, Field as KeplerField, KeplerLayer} from '@kepler.gl/types';
 import {clamp, formatNumberByStep, getNumericStepSize, timeToUnixMilli} from '@kepler.gl/utils';
@@ -29,14 +35,6 @@ import {
   StringFieldFilterProps,
   default as KeplerDataset
 } from '../kepler-table';
-
-export const getLoaderOptions = () => {
-  return {
-    mvt: {
-      workerUrl: `https://unpkg.com/@loaders.gl/mvt/dist/mvt-worker.js`
-    }
-  };
-};
 
 export function isTileDataset(dataset: KeplerDataset | {type: string}): boolean {
   return Boolean(dataset?.type === DatasetType.VECTOR_TILE);
@@ -61,6 +59,9 @@ export type VectorTileMetadata = {
   name?: string;
   description?: string;
   fields: VectorTileField[];
+
+  // if the tileset is of pmtiles format then include info about type of pmtiles
+  pmtilesType?: PMTilesType;
 };
 
 type TilesetMetadata = VectorTileMetadata;
@@ -223,6 +224,14 @@ function getMetaUrlMapbox(tileUrl = ''): string {
 function parseMetadataTileJSON(metadata: PMTilesMetadata | TileJSON): TilesetMetadata | null {
   const parsed = parseMetadataTippecanoeFromDataSource(metadata);
   if (!parsed) return null;
+
+  // PMTiles can potentially be in RasterTile format
+  const mimeType = (metadata as PMTilesMetadata).tileMIMEType;
+  if (mimeType) {
+    parsed.pmtilesType =
+      mimeType === 'application/vnd.mapbox-vector-tile' ? PMTilesType.MVT : PMTilesType.RASTER;
+  }
+
   // Fields already parsed from `json` property
   if (parsed.fields?.length) {
     return parsed;
@@ -489,9 +498,9 @@ function compare(num1: number | undefined, num2: number | undefined, operator: s
   return Number.isFinite(num1) && Number.isFinite(num2)
     ? Math[operator](num1 as number, num2 as number)
     : Number.isFinite(num1)
-    ? num1
+    ? (num1 as number)
     : Number.isFinite(num2)
-    ? num2
+    ? (num2 as number)
     : NaN;
 }
 
@@ -700,7 +709,8 @@ export const getFieldsFromTile = async ({
       metadata &&
       metadata.fields?.length === 0 &&
       metadata.minZoom &&
-      metadata.bounds?.length === 4
+      metadata.bounds?.length === 4 &&
+      metadata.pmtilesType === PMTilesType.MVT
     ) {
       const lon = (metadata.bounds[0] + metadata.bounds[2]) / 2;
       const lat = (metadata.bounds[1] + metadata.bounds[3]) / 2;

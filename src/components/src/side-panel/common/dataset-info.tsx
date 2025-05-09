@@ -31,10 +31,12 @@ export default function DatasetInfoFactory() {
     <StyledDataRowCount className="source-data-rows">
       <FormattedMessage
         id={
-          dataset.type === DatasetType.VECTOR_TILE 
+          dataset.type === DatasetType.VECTOR_TILE
             ? 'datasetInfo.vectorTile'
             : dataset.type === DatasetType.WMS_TILE
             ? 'datasetInfo.wmsTile'
+            : dataset.type === DatasetType.RASTER_TILE
+            ? 'datasetInfo.rasterTile'
             : 'datasetInfo.rowCount'
         }
         values={{rowCount: numFormat(dataset.dataContainer.numRows())}}

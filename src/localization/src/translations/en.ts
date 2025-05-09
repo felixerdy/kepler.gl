@@ -96,7 +96,7 @@ export default {
     aggregateBy: 'Aggregate {field} by',
     '3DModel': '3D Model',
     '3DModelOptions': '3D Model Options',
-    wms: "WMS",
+    wms: 'WMS',
     type: {
       point: 'point',
       arc: 'arc',
@@ -115,6 +115,7 @@ export default {
       '3d': '3D',
       vectortile: 'vector tile',
       wms: 'WMS',
+      rastertile: 'raster tile'
     },
     layerUpdateError:
       'An error occurred during layer update: {errorMessage}. Make sure the format of the input data is valid.',
@@ -213,6 +214,7 @@ export default {
     rowCount: '{rowCount} rows',
     vectorTile: 'Vector tile',
     wmsTile: 'WMS tile',
+    rasterTile: 'Raster tile'
   },
   tooltip: {
     hideLayer: 'Hide layer',
@@ -323,7 +325,7 @@ export default {
       unfilteredData: 'Unfiltered Data',
       fileCount: '{fileCount} Files',
       rowCount: '{rowCount} Rows',
-      vectorTileWarning: "* Export Data for Vector Tile datasets isn't supported"
+      tiledDatasetWarning: "* Export Data for Tiled datasets isn't supported"
     },
     deleteData: {
       warning: 'you are going to delete this dataset. It will affect {length} layers'
@@ -483,11 +485,11 @@ ${'```'}
       descriptionTable: `Paths can be created by joining a list of points from latitude and longitude, sort by an index field (e.g. timestamp) and group by uniq ids.
 
   ### Layer columns:
-  - **id**: - *required* - A \`id\` column is used to group by points. Points with the same id will be joined into a single path.
-  - **lat**: - *required* - The latitude of the point
-  - **lon**: - *required* - The longitude of the point
-  - **alt**: - *optional* - The altitude of the point
-  - **sort by**: - *optional* - A \`sort by\` column is used to sort the points, if not specified, points will be sorted by row index.
+  - **id**: - *required*&nbsp;- A \`id\` column is used to group by points. Points with the same id will be joined into a single path.
+  - **lat**: - *required*&nbsp;- The latitude of the point
+  - **lon**: - *required*&nbsp;- The longitude of the point
+  - **alt**: - *optional*&nbsp;- The altitude of the point
+  - **sort by**: - *optional*&nbsp;- A \`sort by\` column is used to sort the points, if not specified, points will be sorted by row index.
 `,
       exampleTable: 'Example CSV'
     },
@@ -607,6 +609,7 @@ ${'```'}
   },
   tilesetSetup: {
     header: 'Setup Vector Tiles',
+    rasterTileHeader: 'Setup Raster Tiles',
     addTilesetText: 'Add Tileset'
   },
   geocoder: {

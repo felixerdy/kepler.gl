@@ -49,7 +49,10 @@ export {
   getVisibleDatasets,
   makeGetActionCreators,
   mapFieldsSelector,
-  plotContainerSelector
+  bottomWidgetSelector,
+  plotContainerSelector,
+  modalContainerSelector,
+  geoCoderPanelSelector
 } from './kepler-gl';
 export {default as LayerAnimationControllerFactory} from './layer-animation-controller';
 export {Attribution, default as MapContainerFactory} from './map-container';
@@ -184,7 +187,7 @@ export {default as ExportHtmlMapFactory} from './modals/export-map-modal/export-
 export {default as ExportJsonMapFactory} from './modals/export-map-modal/export-json-map';
 export {default as ExportMapModalFactory} from './modals/export-map-modal/export-map-modal';
 export {default as LoadDataModalFactory} from './modals/load-data-modal';
-
+export {default as LoadTileSetFactory} from './modals/tilesets-modals/load-tileset';
 export {default as LoadStorageMapFactory} from './modals/load-storage-map';
 export {default as ModalDialogFactory} from './modals/modal-dialog';
 export {ModalTabItem, default as ModalTabsFactory} from './modals/modal-tabs';
@@ -209,6 +212,7 @@ export {default as WindowActionControlFactory} from './common/animation-control/
 
 export {default as HistogramPlotFactory, HISTOGRAM_MASK_MODE} from './common/histogram-plot';
 export {default as IconButton} from './common/icon-button';
+export {default as LinkRenderer} from './common/link-renderer';
 export {
   default as ColumnStatsChartFactory,
   HISTOGRAM_WIDTH,
@@ -437,6 +441,7 @@ export {
   StyledPanelDropdown,
   StyledPanelHeader,
   StyledType,
+  shouldForwardProp,
   TextArea,
   TextAreaLight,
   Tooltip,
