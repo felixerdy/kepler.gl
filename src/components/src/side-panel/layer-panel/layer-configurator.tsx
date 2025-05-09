@@ -1034,7 +1034,6 @@ export default function LayerConfiguratorFactory(
         <StyledLayerVisualConfigurator>
           <LayerConfigGroup label={'layer.wms'} collapsible>
             <VisConfigSlider {...layer.visConfigSettings.opacity} {...visConfiguratorProps} />
-            {/* TODO: Default selected is always undefined */}
             <ItemSelector
               selectedItems={layer.config.visConfig.wmsLayer}
               options={layerChannelConfigProps.dataset.metadata.layers}

@@ -149,7 +149,7 @@ export default class WMSLayer extends AbstractTileLayer<WMSFeature> {
     const {visConfig} = this.config;
     const {data} = opts;
 
-    const wmsLayer = visConfig.wmsLayer.name ?? data.metadata.layers[0].name;
+    const wmsLayer = visConfig.wmsLayer.name ?? data.metadata?.layers?.[0]?.name ?? null;
 
     return [
       new DeckWMSLayer({
